@@ -1,7 +1,4 @@
-from random import randint, choice
-from tkinter import Tk, Canvas
-from time import time
-
+from random import choice
 class Maze:
     def __init__(self, size):
         self.size = size
@@ -87,7 +84,6 @@ class Maze:
         self.out = out
 
     def draw(self, canv, size=20):
-        print('Drawing maze')
         for x in range(self.size):
             for y in range(self.size):
                 if self.arr[y][x] == 1:
