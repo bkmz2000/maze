@@ -77,7 +77,7 @@ class Game:
     def draw(self):
         n = time()
         self.canv.delete('all')
-        self.maze.draw(self.canv, 20) # 0.011569738388061523
+        #self.maze.draw(self.canv, 20) # 0.011569738388061523
 
         self.fog.draw(self.canv, 20) # 0.01540231704711914
 

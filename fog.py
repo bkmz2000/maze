@@ -8,38 +8,10 @@ class Fog:
         self.arr = [[1 for x in range(maze.size)] 
                        for y in range(maze.size)]
 
+        self.vis = [] 
+
     def update(self, x, y):
-        '''xp = x+1 < self.size
-        xm = x-1 >= 0
-
-        yp = y+1 < self.size
-        ym = y-1 >= 0
-
-        if yp:
-            self.arr[y+1][x] = 0
-            
-        if xp:
-            self.arr[y][x+1] = 0
-            
-        if xp and yp:
-            self.arr[y+1][x+1] = 0
-            
-        if ym and xp:
-            self.arr[y-1][x+1] = 0
-            
-        if yp and xm:
-            self.arr[y+1][x-1] = 0
-            
-        if xm:
-            self.arr[y][x-1] = 0
-            
-        if xm and ym:
-            self.arr[y-1][x-1] = 0
-            
-        if ym:
-            self.arr[y-1][x] = 0'''
-
-
+        self.vis.append((x, y))
         xBuff = x
         
         while not self.maze[y][xBuff] == 0:
@@ -89,8 +61,16 @@ class Fog:
         for x in range(self.size):
             for y in range(self.size):
                 if self.arr[y][x] == 1:
-                    canv.create_rectangle(x*size, y*size,
-                                         (x+1)*size, (y+1)*size,
-                                         fill = 'gray')
+                    color = 'gray'
+
+                if self.arr[y][x] == 0:
+                    color = 'lightblue'
+
+
+                if (x, y) in self.vis:
+                    color = 'white'
+                canv.create_rectangle(x*size, y*size,
+                                     (x+1)*size, (y+1)*size,
+                                     fill = color)
 
         canv.update()
