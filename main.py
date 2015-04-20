@@ -4,7 +4,7 @@ from tkinter import Tk, Canvas
 from time import sleep, time
 from random import choice
 from player import Player
-from fog import Fog
+from scene import GameScene
 
 
 class Game:
@@ -33,7 +33,7 @@ class Game:
         x = int(event.x/20)
         y = int(event.y/20)
 
-        path = str(Path(self.maze, (self.player.x, self.player.y),
+        path = str(Path(self.scene, (self.player.x, self.player.y),
                                    (x, y)))
 
         for i in path:
@@ -49,11 +49,12 @@ class Game:
 
     def setMaze(self):
         self.maze = Maze(20)
-        self.fog  = Fog(self.maze) 
+        
+        self.scene  = GameScene(self.maze) 
         pcoord = choice(self.maze.vis)
         self.player.x = pcoord[0]
         self.player.y = pcoord[1]
-        self.fog.update(self.player.x,
+        self.scene.update(self.player.x,
                         self.player.y)
 
     def movePlayer(self, d):
@@ -69,20 +70,15 @@ class Game:
         if d == 'a':
             self.player.moveLeft(self.maze)
 
-        self.fog.update(self.player.x,
+        self.scene.update(self.player.x,
                         self.player.y)
 
         self.draw()
 
     def draw(self):
-        n = time()
         self.canv.delete('all')
-        #self.maze.draw(self.canv, 20) # 0.011569738388061523
-
-        self.fog.draw(self.canv, 20) # 0.01540231704711914
-
-        self.player.draw(self.canv, 20) #0.0006022453308105469
-        print(time()-n)
+        self.scene.draw(self.canv, 20)
+        self.player.draw(self.canv, 20) 
 
 player = Player()
 game   = Game(player)
