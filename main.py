@@ -3,15 +3,15 @@ from path import Path
 from tkinter import Tk, Canvas
 from time import sleep, time
 from random import choice
-from player import Player
+from player import Creature
 from scene import GameScene
 
 
 class Game:
-    def __init__(self, player, cellSize = 20):
+    def __init__(self, player, cellSize = 16):
         self.root = Tk()
         self.size = 20
-        self.player = player
+        self.player = Creature()
         self.canv = Canvas(self.root, width  = 20 * cellSize, 
                                       height = 20 * cellSize,
                                       bg = 'black')
@@ -30,8 +30,8 @@ class Game:
         self.root.mainloop()
 
     def movePlayerTo(self, event):
-        x = int(event.x/20)
-        y = int(event.y/20)
+        x = int(event.x/16)
+        y = int(event.y/16)
 
         path = str(Path(self.scene, (self.player.x, self.player.y),
                                    (x, y)))
@@ -54,8 +54,7 @@ class Game:
         pcoord = choice(self.maze.vis)
         self.player.x = pcoord[0]
         self.player.y = pcoord[1]
-        self.scene.update(self.player.x,
-                        self.player.y)
+        self.scene.update(self.player)
 
     def movePlayer(self, d):
         if d == 's':
@@ -70,18 +69,17 @@ class Game:
         if d == 'a':
             self.player.moveLeft(self.maze)
 
-        self.scene.update(self.player.x,
-                        self.player.y)
+        self.scene.update(self.player)
+
 
         self.draw()
 
     def draw(self):
         self.canv.delete('all')
-        self.scene.draw(self.canv, 20)
-        self.player.draw(self.canv, 20) 
-
-player = Player()
-game   = Game(player)
+        self.scene.draw(self.canv, 16)
+        #self.player.draw(self.canv, 16) 
+        
+game   = Game(Creature())
 game.draw()
 
 

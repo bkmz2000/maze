@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import choice 
 from tkinter import Tk, Canvas
 from time import time
 

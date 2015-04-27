@@ -1,21 +1,30 @@
 from lab import Maze
-from tkinter import Tk, Canvas
-
+from tkinter import Tk, Canvas, PhotoImage
+from random import randint
 class GameScene:
     def __init__(self, maze):
         self.size = maze.size
         self.maze = maze.arr
+        self.player = None
         self.arr = [[0 for x in range(maze.size)] 
                        for y in range(maze.size)]
 
+        self.wall = PhotoImage(file = 'res/wall.png')
+        self.floor = PhotoImage(file = 'res/floor.png')
+        self.floorN = PhotoImage(file = 'res/floor1.png')
+        self.none = PhotoImage(file = 'res/none.png')
+        self.portal = PhotoImage(file = 'res/portal.png')
+        self.playerImg = PhotoImage(file = 'res/player'+str(randint(1,4))+'.png')
+
         self.vis = [] 
 
-    def update(self, x, y):
-        self.vis.append((x, y))
-        xBuff = x
+    def update(self, player):
+        self.player = player
+        self.vis.append((player.x, player.y))
+        xBuff = player.x
         
-        while not self.maze[y][xBuff] == 0:
-            self.arr[y][xBuff]   = 1
+        while not self.maze[player.y][xBuff] == 0:
+            self.arr[player.y][xBuff]   = 1
             
             if xBuff+1 < self.size: 
                 xBuff += 1
@@ -23,10 +32,10 @@ class GameScene:
             else:
                 break
 
-        xBuff = x
+        xBuff = player.x
         
-        while not self.maze[y][xBuff] == 0:
-            self.arr[y][xBuff]   = 1
+        while not self.maze[player.y][xBuff] == 0:
+            self.arr[player.y][xBuff]   = 1
 
             if xBuff-1 >= 0:
                 xBuff -= 1
@@ -34,10 +43,10 @@ class GameScene:
             else:
                 break
 
-        yBuff = y
+        yBuff = player.y
 
-        while not self.maze[yBuff][x] == 0:
-            self.arr[yBuff][x]   = 1
+        while not self.maze[yBuff][player.x] == 0:
+            self.arr[yBuff][player.x]   = 1
             
             if yBuff + 1 < self.size:
                 yBuff += 1
@@ -45,10 +54,10 @@ class GameScene:
             else:
                 break
 
-        yBuff = y
+        yBuff = player.y
 
-        while not self.maze[yBuff][x] == 0:
-            self.arr[yBuff][x]   = 1
+        while not self.maze[yBuff][player.x] == 0:
+            self.arr[yBuff][player.x]   = 1
 
             if yBuff-1 >= 0:
                 yBuff -= 1
@@ -58,22 +67,23 @@ class GameScene:
 
 
     def draw(self, canv, size):
-        for x in range(self.size):
-            for y in range(self.size):
+        for x in range(0, self.size):
+            for y in range(0, self.size):
                 if self.arr[y][x] == 0:
-                    color = 'gray'
-
+                    image = self.none
+                    
                 if self.arr[y][x] == 1:
-                    color = 'lightblue'
+                    image = self.floorN
 
                 if (x, y) in self.vis:
-                    color = 'white'
+                    image = self.floor
 
                 if self.arr[y][x] == 1 and self.maze[y][x] == 2:
-                    color = 'purple'
+                    image = self.portal
 
-                canv.create_rectangle(x*size, y*size,
-                                     (x+1)*size, (y+1)*size,
-                                     fill = color)
+                canv.create_image(x*size, y*size, image= image)
+
+        canv.create_image(self.player.x * size, 
+                          self.player.y * size, image = self.playerImg)
 
         canv.update()

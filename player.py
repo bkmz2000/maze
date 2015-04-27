@@ -1,13 +1,23 @@
-class Player:
-    def __init__(self, x = 0, y = 0):
+from tkinter import Tk, Canvas, PhotoImage
+from random import randint
+
+class Creature:
+    def __init__(self, x=0,y=0):
         self.x = x
         self.y = y
+        self.number = randint(1,4)
 
-    def draw(self, canv, cellSize):
-        canv.create_rectangle(self.x * cellSize,
-                              self.y * cellSize,
-                              (self.x+1) * cellSize,
-                              (self.y+1) * cellSize, fill = 'red')
+    def draw(self, canv, size):
+        print('res/player'+str(self.number)+'.png')
+
+        x=self.x
+        y=self.y
+        
+        root = Tk()
+        img = PhotoImage(root, file = 'res/player1.png')
+        img.pack()
+        root.mainloop()
+        canv.create_image(x*size, y*size, image = img)
 
         canv.update()
 
