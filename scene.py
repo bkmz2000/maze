@@ -70,7 +70,18 @@ class GameScene:
         for x in range(0, self.size):
             for y in range(0, self.size):
                 if self.arr[y][x] == 0:
-                    image = self.none
+                    if self.maze[y][x] == 0:
+                        try:
+                            if self.arr[y-1][x] == 1 or\
+                               self.arr[y+1][x] == 1 or\
+                               self.arr[y][x+1] == 1 or\
+                               self.arr[y][x-1] == 1:
+
+                                image = self.wall
+                        except:
+                            pass   
+                    else:
+                        image = self.none
                     
                 if self.arr[y][x] == 1:
                     image = self.floorN
